@@ -123,10 +123,10 @@ public class SchemaCapturer {
 
 
 	private void captureDatabase(Database db) throws SQLException {
-		String tblSql = "SELECT TABLES.TABLE_NAME, CCSA.CHARACTER_SET_NAME "
+		String tblSql = "SELECT TABLE_NAME, CHARACTER_SET_NAME "
 			+ "FROM INFORMATION_SCHEMA.TABLES "
 			+ "JOIN information_schema.COLLATION_CHARACTER_SET_APPLICABILITY AS CCSA"
-			+ " ON TABLES.TABLE_COLLATION = CCSA.COLLATION_NAME WHERE TABLES.TABLE_SCHEMA = ?";
+			+ " ON TABLE_COLLATION = CCSA.COLLATION_NAME WHERE TABLE_SCHEMA = ?";
 
 		if ( this.includeTables.size() > 0 ) {
 			tblSql += " AND TABLES.TABLE_NAME IN " + Sql.inListSQL(includeTables.size());
