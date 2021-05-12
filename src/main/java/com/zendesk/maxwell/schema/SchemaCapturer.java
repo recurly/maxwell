@@ -132,6 +132,9 @@ public class SchemaCapturer {
 			tblSql += " AND TABLES.TABLE_NAME IN " + Sql.inListSQL(includeTables.size());
 		}
 
+		LOGGER.info("capture database '"+ db.getName() +"'");
+		LOGGER.info(" sql: "+ tblSql);
+
 		PreparedStatement tblQuery = connection.prepareStatement(tblSql);
 		tblQuery.setString(1, db.getName());
 		Sql.prepareInList(tblQuery, 2, includeTables);
@@ -139,13 +142,17 @@ public class SchemaCapturer {
 		ResultSet rs = tblQuery.executeQuery();
 
 		HashMap<String, Table> tables = new HashMap<>();
+		int n = 0;
 		while (rs.next()) {
 			String tableName = rs.getString("TABLE_NAME");
 			String characterSetName = rs.getString("CHARACTER_SET_NAME");
 			Table t = db.buildTable(tableName, characterSetName);
 			tables.put(tableName, t);
+			n++;
+			LOGGER.info(" captured table: "+ db.getName() +"."+ tableName);
 		}
 		rs.close();
+		LOGGER.info(" captured "+ n +" tables.");
 
 		captureTables(db, tables);
 	}

@@ -6,6 +6,8 @@ import java.util.List;
 import com.zendesk.maxwell.CaseSensitivity;
 import com.zendesk.maxwell.schema.columndef.ColumnDef;
 import com.zendesk.maxwell.schema.ddl.InvalidSchemaError;
+import org.slf4j.Logger;
+import org.slf4j.LoggerFactory;
 
 public class Database {
 	private final String name;
@@ -130,6 +132,9 @@ public class Database {
 
 		Table t = new Table(this.name, name, charset, list, pks);
 		this.tableList.add(t);
+		Logger log = LoggerFactory.getLogger(this.getClass());
+		log.info("Build Table "+ name +"("+ charset +")");
+		log.info("Table List:\n"+ tableList);
 		return t;
 	}
 
